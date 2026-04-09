@@ -1,29 +1,42 @@
 import http from 'http';
+import { readFile } from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 const PORT = process.env.PORT;
-const server = http.createServer((req,res)=>{
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const serveFile = async (res, filePath) => {
+  const content = await readFile(filePath, 'utf8');
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.end(content);
+};
+
+const server = http.createServer(async (req, res) => {
   try {
-    if(req.method === 'GET'){
-      if(req.url === '/'){
-        res.writeHead(200,{'Content-Type':'text/html'});
-        res.write('<h1>Home Page</h1>');
-        res.end();
-      } else if(req.url === '/about'){
-        res.writeHead(200,{'Content-Type':'text/html'});
-        res.write('<h1>About Page</h1>');
-        res.end();
-      } else {
-        res.writeHead(404,{'Content-Type':'text/html'});
-        res.write('<h1>Page Not Found</h1>');
-        res.end();
-      }
-  }else{
-    throw new Error('Method Not Allowed');
-  } }catch (error) {
-    res.writeHead(500,{'Content-Type':'text/html'});
-    res.write('<h1>Internal Server Error</h1>');
-    res.end();
+    if (req.method !== 'GET') {
+      throw new Error('Method Not Allowed');
+    }
+
+    if (req.url === '/') {
+      await serveFile(res, path.join(__dirname, 'public', 'index.html'));
+      return;
+    }
+
+    if (req.url === '/about') {
+      await serveFile(res, path.join(__dirname, 'public', 'about.html'));
+      return;
+    }
+
+    res.writeHead(404, { 'Content-Type': 'text/html' });
+    res.end('<h1>Page Not Found</h1>');
+  } catch (error) {
+    res.writeHead(500, { 'Content-Type': 'text/html' });
+    res.end('<h1>Internal Server Error</h1>');
   }
 });
-server.listen(PORT,()=>{
+
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-})
+});
