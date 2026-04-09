@@ -1,1 +1,1 @@
-console.log('Hello, World!');
+console.log('Run `npm run serve` for the HTML server or `npm start` for the JSON API.');

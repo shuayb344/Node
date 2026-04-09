@@ -1,13 +1,14 @@
 {
   "name": "node",
   "version": "1.0.0",
-  "description": "node tutorial",
+  "description": "Simple Node.js demo project with basic HTTP routes",
   "license": "ISC",
   "author": "shuayb",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --env-file .env server2.js"
+    "start": "nodemon --env-file .env server2.js",
+    "serve": "node server.js"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
