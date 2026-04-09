@@ -1,0 +1,15 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "node tutorial",
+  "license": "ISC",
+  "author": "shuayb",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --env-file .env server2.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
